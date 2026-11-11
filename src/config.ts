@@ -3,7 +3,16 @@ export const ASSETS = {
   umutPhoto: '/photos/umut.jpg',
   feyzaPhoto: '/photos/feyza.jpg',
   idolPhoto: '/photos/idol.jpg',
-  birthdayMessage: `Seni henüz yüzyüze görmemiş olsam bile konuştuğumuz her zaman sanki yanımda gibi hissettiren ve en ihtiyacım olduğu zamanlarda sanki hissedip bir şekilde yanımda olman seni kısa sürede çok değerli hale getirdi benim için. Sana karşı hislerim tahmin edebileceğinden daha güçlü ve seni sandığından çok önemsiyorum sanırım. Güzelliğin ve kendine has tavırların beni hep sana karşı savunmasız bırakıyo ve bundan keyif alıyorum. Konuşurken seni mutlu etmekten ve üzgün olduğun zamanlar bi şey yapamasam bile senin yanında olabilmekten dolayı kendimi de özel hissediyorum. Çok uzun tutmiycam kısacası doğduğun için ve hayatıma girdiğin için çok mutluyum. İyi ki varsın ve bi şekilde seni tanıdım. Seni çok seviyorum. İyi ki doğdun bitanem`,
+  birthdayMessage: `Seni henüz yüzyüze görmemiş olsam bile konuştuğumuz her zaman sanki yanımda gibi hissettiren ve en ihtiyacım olduğu zamanlarda sanki hissedip bir şekilde yanımda olman seni kısa sürede çok değerli hale getirdi benim için.
+
+Sana karşı hislerim tahmin edebileceğinden daha güçlü ve seni sandığından çok önemsiyorum sanırım. Güzelliğin ve kendine has tavırların beni hep sana karşı savunmasız bırakıyo ve bundan keyif alıyorum.
+
+Konuşurken seni mutlu etmekten ve üzgün olduğun zamanlar bi şey yapamasam bile senin yanında olabilmekten dolayı kendimi de özel hissediyorum.
+
+Çok uzun tutmiycam kısacası doğduğun için ve hayatıma girdiğin için çok mutluyum. İyi ki varsın ve bi şekilde seni tanıdım.
+
+Seni çok seviyorum.
+İyi ki doğdun bitanem`,
 }
 
 export const COPY = {

@@ -619,11 +619,13 @@ textarea {
 }
 
 .message {
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
-  gap: 22px;
+  gap: 18px;
   position: relative;
+  overflow-y: auto;
+  padding-top: max(28px, env(safe-area-inset-top));
 }
 
 .message__glow {
@@ -643,6 +645,7 @@ textarea {
   background: rgba(255, 244, 236, 0.08);
   border: 1px solid rgba(255, 244, 236, 0.14);
   text-align: left;
+  font-size: 0.98rem;
 }
 
 .message__letter p {
