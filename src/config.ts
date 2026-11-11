@@ -1,8 +1,8 @@
 /** Gerçek fotoğraflar public/photos altında. */
 export const ASSETS = {
-  umutPhoto: '/photos/umut.jpg',
-  feyzaPhoto: '/photos/feyza.jpg',
-  idolPhoto: '/photos/idol.jpg',
+  umutPhoto: './photos/umut.jpg',
+  feyzaPhoto: './photos/feyza.jpg',
+  idolPhoto: './photos/idol.jpg',
   birthdayMessage: `Seni henüz yüzyüze görmemiş olsam bile konuştuğumuz her zaman sanki yanımda gibi hissettiren ve en ihtiyacım olduğu zamanlarda sanki hissedip bir şekilde yanımda olman seni kısa sürede çok değerli hale getirdi benim için.
 
 Sana karşı hislerim tahmin edebileceğinden daha güçlü ve seni sandığından çok önemsiyorum sanırım. Güzelliğin ve kendine has tavırların beni hep sana karşı savunmasız bırakıyo ve bundan keyif alıyorum.
