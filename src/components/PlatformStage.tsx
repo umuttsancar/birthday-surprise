@@ -11,10 +11,10 @@ type Platform = { x: number; y: number; w: number }
 
 const PLAYER_W = 48
 const PLAYER_H = 68
-const GRAVITY = 0.42
-const JUMP = -12.8
-const MOVE = 4.2
-const COYOTE_MS = 120
+const GRAVITY = 0.5
+const JUMP = -10.4
+const MOVE = 3.8
+const COYOTE_MS = 100
 
 export function PlatformStage({ onComplete }: Props) {
   const areaRef = useRef<HTMLDivElement>(null)
@@ -50,41 +50,47 @@ export function PlatformStage({ onComplete }: Props) {
       s.width = w
       s.height = h
 
-      // Merdiven gibi: her basamak zıplama menzilinin içinde
-      const step = Math.min(78, Math.max(58, h * 0.145))
-      const p1 = { x: 10, y: h - 36, w: Math.max(150, w * 0.58) }
-      const p2 = {
-        x: Math.max(40, w * 0.32),
-        y: p1.y - step,
-        w: Math.max(140, w * 0.52),
-      }
-      const p3 = {
-        x: 16,
-        y: p2.y - step,
-        w: Math.max(140, w * 0.5),
-      }
-      s.platforms = [p1, p2, p3]
+      // 6 platform: kolay merdiven, yatayda sağ-sol salınım
+      // Zıplama ~108px; basamak ~58-64px → rahat çıkar
+      const step = Math.min(64, Math.max(56, h * 0.105))
+      const baseY = h - 34
+      const pw = Math.max(118, w * 0.4)
 
-      const placeHeart = (p: Platform, id: number): Heart => ({
+      const p1 = { x: 8, y: baseY, w: Math.max(150, w * 0.5) }
+      const p2 = { x: w - pw - 12, y: baseY - step, w: pw }
+      const p3 = { x: 14, y: baseY - step * 2, w: pw }
+      const p4 = { x: w - pw - 18, y: baseY - step * 3, w: pw }
+      const p5 = { x: 20, y: baseY - step * 4, w: pw }
+      const p6 = {
+        x: Math.max(24, w * 0.28),
+        y: baseY - step * 5,
+        w: Math.max(130, w * 0.44),
+      }
+      s.platforms = [p1, p2, p3, p4, p5, p6]
+
+      // 3 kalp: 2, 4 ve 6. platformlarda
+      const heartHosts = [
+        { id: 1, p: p2 },
+        { id: 2, p: p4 },
+        { id: 3, p: p6 },
+      ]
+      s.hearts = heartHosts.map(({ id, p }) => ({
         id,
         x: p.x + p.w * 0.5 - 14,
-        y: p.y - 38,
+        y: p.y - 36,
         collected: s.started
           ? (s.hearts.find((h) => h.id === id)?.collected ?? false)
           : false,
-      })
-      s.hearts = [placeHeart(p1, 1), placeHeart(p2, 2), placeHeart(p3, 3)]
+      }))
 
       if (!s.started) {
-        s.x = 28
+        s.x = 24
         s.y = p1.y - PLAYER_H
         s.vx = 0
         s.vy = 0
         s.onGround = true
-        setHeartsLeft(3)
         setDone(false)
       } else {
-        // Yeniden boyutlanınca oyuncuyu ekranda tut
         s.x = Math.max(0, Math.min(w - PLAYER_W, s.x))
         s.y = Math.max(0, Math.min(h - PLAYER_H, s.y))
       }
@@ -109,25 +115,21 @@ export function PlatformStage({ onComplete }: Props) {
       last = now
       const s = state.current
 
-      const wantLeft = s.keys.left
-      const wantRight = s.keys.right
-      if (wantLeft && !wantRight) {
+      if (s.keys.left && !s.keys.right) {
         s.vx = -MOVE
         s.facing = -1
-      } else if (wantRight && !wantLeft) {
+      } else if (s.keys.right && !s.keys.left) {
         s.vx = MOVE
         s.facing = 1
       } else {
-        s.vx *= 0.8
+        s.vx *= 0.78
         if (Math.abs(s.vx) < 0.08) s.vx = 0
       }
 
       s.vy += GRAVITY * dt
-      // Terminal düşüş hızı — platformdan geçmeyi azaltır
-      s.vy = Math.min(s.vy, 14)
+      s.vy = Math.min(s.vy, 13)
       s.x += s.vx * dt
       s.y += s.vy * dt
-
       s.x = Math.max(0, Math.min(s.width - PLAYER_W, s.x))
 
       const wasGrounded = s.onGround
@@ -136,23 +138,19 @@ export function PlatformStage({ onComplete }: Props) {
         const withinX = s.x + PLAYER_W > p.x + 2 && s.x < p.x + p.w - 2
         const feet = s.y + PLAYER_H
         const prevFeet = feet - s.vy * dt
-        const landing =
-          withinX && s.vy >= 0 && prevFeet <= p.y + 6 && feet >= p.y - 1
-        if (landing) {
+        if (withinX && s.vy >= 0 && prevFeet <= p.y + 6 && feet >= p.y - 1) {
           s.y = p.y - PLAYER_H
           s.vy = 0
           s.onGround = true
         }
       }
 
-      if (s.onGround) {
-        s.coyoteUntil = now + COYOTE_MS
-      } else if (wasGrounded) {
+      if (s.onGround || wasGrounded) {
         s.coyoteUntil = now + COYOTE_MS
       }
 
       if (s.y > s.height + 40) {
-        s.x = 28
+        s.x = 24
         s.y = s.platforms[0].y - PLAYER_H
         s.vx = 0
         s.vy = 0
@@ -192,12 +190,11 @@ export function PlatformStage({ onComplete }: Props) {
   const jump = () => {
     const s = state.current
     const canJump = (s.onGround || performance.now() < s.coyoteUntil) && !done
-    if (canJump) {
-      s.vy = JUMP
-      s.onGround = false
-      s.coyoteUntil = 0
-      s.started = true
-    }
+    if (!canJump) return
+    s.vy = JUMP
+    s.onGround = false
+    s.coyoteUntil = 0
+    s.started = true
   }
 
   const setKey = (key: 'left' | 'right', value: boolean) => {
@@ -281,7 +278,7 @@ export function PlatformStage({ onComplete }: Props) {
             <div className="player__boot player__boot--r" />
           </div>
         )}
-        <p className="playfield__tip">Sağa basıp Zıpla</p>
+        <p className="playfield__tip">Yön + Zıpla · 3 kalbi topla</p>
       </div>
 
       <div className="controls">
