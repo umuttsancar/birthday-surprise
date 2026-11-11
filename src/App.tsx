@@ -1,15 +1,24 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IntroScreen } from './components/IntroScreen'
 import { PlatformStage } from './components/PlatformStage'
 import { QuizStage } from './components/QuizStage'
 import { ChoiceStage } from './components/ChoiceStage'
 import { MessageScreen } from './components/MessageScreen'
+import { notifyLinkOpened, notifyReachedMessage } from './notify'
 
 type Scene = 'intro' | 'platform' | 'quiz' | 'choice' | 'message'
 
 export default function App() {
   const [scene, setScene] = useState<Scene>('intro')
+
+  useEffect(() => {
+    notifyLinkOpened()
+  }, [])
+
+  useEffect(() => {
+    if (scene === 'message') notifyReachedMessage()
+  }, [scene])
 
   return (
     <div className="app-shell">

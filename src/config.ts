@@ -1,3 +1,9 @@
+/** Telefonda ntfy uygulamasıyla bu konuya abone ol — link açılınca haber gelir. */
+export const NOTIFY = {
+  topic: 'umut-feyza-surpriz-k9m2xq',
+  subscribeUrl: 'https://ntfy.sh/umut-feyza-surpriz-k9m2xq',
+}
+
 /** Gerçek fotoğraflar public/photos altında. */
 export const ASSETS = {
   umutPhoto: './photos/umut.jpg',
